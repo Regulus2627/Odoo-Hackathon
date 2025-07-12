@@ -1,0 +1,776 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Skill Swap - Request Form</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            min-height: 100vh;
+            padding: 20px;
+        }
+
+        .container {
+            max-width: 800px;
+            margin: 0 auto;
+        }
+
+        header {
+            background: rgba(255, 255, 255, 0.1);
+            backdrop-filter: blur(10px);
+            border-radius: 20px;
+            padding: 30px;
+            margin-bottom: 30px;
+            text-align: center;
+            border: 1px solid rgba(255, 255, 255, 0.2);
+        }
+
+        h1 {
+            color: white;
+            font-size: 2.5em;
+            margin-bottom: 10px;
+            text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.3);
+        }
+
+        .subtitle {
+            color: rgba(255, 255, 255, 0.9);
+            font-size: 1.2em;
+            margin-bottom: 20px;
+        }
+
+        .back-btn {
+            position: absolute;
+            top: 20px;
+            left: 20px;
+            background: rgba(255, 255, 255, 0.2);
+            color: white;
+            border: none;
+            padding: 12px 20px;
+            border-radius: 25px;
+            cursor: pointer;
+            font-size: 16px;
+            font-weight: 600;
+            transition: all 0.3s ease;
+            backdrop-filter: blur(10px);
+            border: 1px solid rgba(255, 255, 255, 0.3);
+        }
+
+        .back-btn:hover {
+            background: rgba(255, 255, 255, 0.3);
+            transform: translateY(-2px);
+        }
+
+        .swap-form-container {
+            background: rgba(255, 255, 255, 0.1);
+            backdrop-filter: blur(15px);
+            border-radius: 20px;
+            padding: 40px;
+            border: 1px solid rgba(255, 255, 255, 0.2);
+            position: relative;
+            overflow: hidden;
+        }
+
+        .swap-form-container::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            height: 4px;
+            background: linear-gradient(90deg, #ff6b6b, #4ecdc4, #45b7d1, #96ceb4);
+            animation: shimmer 2s infinite;
+        }
+
+        @keyframes shimmer {
+            0% { transform: translateX(-100%); }
+            100% { transform: translateX(100%); }
+        }
+
+        .users-info {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 30px;
+            gap: 20px;
+        }
+
+        .user-card {
+            background: rgba(255, 255, 255, 0.1);
+            backdrop-filter: blur(10px);
+            border-radius: 15px;
+            padding: 20px;
+            border: 1px solid rgba(255, 255, 255, 0.2);
+            flex: 1;
+            text-align: center;
+        }
+
+        .user-name {
+            color: white;
+            font-size: 1.3em;
+            font-weight: 600;
+            margin-bottom: 10px;
+            text-shadow: 1px 1px 2px rgba(0, 0, 0, 0.3);
+        }
+
+        .user-role {
+            color: rgba(255, 255, 255, 0.8);
+            font-size: 0.9em;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            margin-bottom: 15px;
+        }
+
+        .skills-preview {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 8px;
+            justify-content: center;
+        }
+
+        .skill-tag {
+            background: rgba(255, 255, 255, 0.2);
+            color: white;
+            padding: 6px 12px;
+            border-radius: 15px;
+            font-size: 0.85em;
+            font-weight: 500;
+            border: 1px solid rgba(255, 255, 255, 0.3);
+        }
+
+        .swap-arrow {
+            font-size: 2em;
+            color: white;
+            margin: 0 20px;
+            text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.3);
+        }
+
+        .form-section {
+            margin-bottom: 30px;
+        }
+
+        .form-label {
+            color: white;
+            font-size: 1.1em;
+            font-weight: 600;
+            margin-bottom: 10px;
+            display: block;
+            text-shadow: 1px 1px 2px rgba(0, 0, 0, 0.3);
+        }
+
+        .form-select {
+            width: 100%;
+            padding: 15px 20px;
+            border: none;
+            border-radius: 15px;
+            font-size: 16px;
+            background: rgba(255, 255, 255, 0.9);
+            backdrop-filter: blur(5px);
+            transition: all 0.3s ease;
+            border: 1px solid rgba(255, 255, 255, 0.3);
+        }
+
+        .form-select:focus {
+            outline: none;
+            box-shadow: 0 0 20px rgba(255, 255, 255, 0.3);
+            transform: translateY(-2px);
+        }
+
+        .form-textarea {
+            width: 100%;
+            padding: 15px 20px;
+            border: none;
+            border-radius: 15px;
+            font-size: 16px;
+            background: rgba(255, 255, 255, 0.9);
+            backdrop-filter: blur(5px);
+            transition: all 0.3s ease;
+            border: 1px solid rgba(255, 255, 255, 0.3);
+            resize: vertical;
+            min-height: 120px;
+            font-family: inherit;
+        }
+
+        .form-textarea:focus {
+            outline: none;
+            box-shadow: 0 0 20px rgba(255, 255, 255, 0.3);
+            transform: translateY(-2px);
+        }
+
+        .form-textarea::placeholder {
+            color: #666;
+        }
+
+        .submit-btn {
+            width: 100%;
+            padding: 15px;
+            border: none;
+            border-radius: 25px;
+            font-size: 18px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            background: linear-gradient(45deg, #ff6b6b, #ff8e8e);
+            color: white;
+            box-shadow: 0 4px 15px rgba(255, 107, 107, 0.3);
+        }
+
+        .submit-btn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 8px 25px rgba(255, 107, 107, 0.4);
+        }
+
+        .submit-btn:disabled {
+            background: rgba(255, 255, 255, 0.1);
+            color: rgba(255, 255, 255, 0.5);
+            cursor: not-allowed;
+            border: 1px solid rgba(255, 255, 255, 0.2);
+        }
+
+        .loading {
+            text-align: center;
+            color: white;
+            font-size: 1.2em;
+            margin-top: 50px;
+        }
+
+        .spinner {
+            border: 4px solid rgba(255, 255, 255, 0.3);
+            border-top: 4px solid white;
+            border-radius: 50%;
+            width: 40px;
+            height: 40px;
+            animation: spin 1s linear infinite;
+            margin: 20px auto;
+        }
+
+        @keyframes spin {
+            0% { transform: rotate(0deg); }
+            100% { transform: rotate(360deg); }
+        }
+
+        .error-message {
+            background: rgba(255, 107, 107, 0.2);
+            color: white;
+            padding: 15px;
+            border-radius: 15px;
+            margin-bottom: 20px;
+            border: 1px solid rgba(255, 107, 107, 0.5);
+            text-align: center;
+        }
+
+        .success-message {
+            background: rgba(78, 205, 196, 0.2);
+            color: white;
+            padding: 15px;
+            border-radius: 15px;
+            margin-bottom: 20px;
+            border: 1px solid rgba(78, 205, 196, 0.5);
+            text-align: center;
+        }
+
+        .user-stats {
+            display: flex;
+            justify-content: space-around;
+            margin-top: 15px;
+            padding-top: 15px;
+            border-top: 1px solid rgba(255, 255, 255, 0.2);
+        }
+
+        .stat-item {
+            color: rgba(255, 255, 255, 0.8);
+            font-size: 0.8em;
+            text-align: center;
+        }
+
+        .stat-value {
+            color: white;
+            font-weight: 600;
+            font-size: 1.1em;
+        }
+
+        @media (max-width: 768px) {
+            .users-info {
+                flex-direction: column;
+            }
+            
+            .swap-arrow {
+                transform: rotate(90deg);
+                margin: 15px 0;
+            }
+            
+            h1 {
+                font-size: 2em;
+            }
+            
+            .container {
+                padding: 10px;
+            }
+            
+            .back-btn {
+                position: static;
+                margin-bottom: 20px;
+                width: 100%;
+            }
+        }
+    </style>
+</head>
+<body>
+    <button class="back-btn" onclick="goBack()">← Back to Browse</button>
+    
+    <div class="container">
+        <header>
+            <h1>🔄 Skill Swap</h1>
+            <p class="subtitle">Request a Skill Exchange</p>
+        </header>
+
+        <div class="loading" id="loadingIndicator">
+            <div class="spinner"></div>
+            Loading swap details...
+        </div>
+
+        <div class="swap-form-container" id="swapFormContainer" style="display: none;">
+            <div class="users-info">
+                <div class="user-card">
+                    <div class="user-name" id="currentUserName">You</div>
+                    <div class="user-role">Offering</div>
+                    <div class="skills-preview" id="currentUserSkills">
+                        <!-- Skills will be populated here -->
+                    </div>
+                    <div class="user-stats">
+                        <div class="stat-item">
+                            <div class="stat-value" id="currentUserRating">4.8</div>
+                            <div>Rating</div>
+                        </div>
+                        <div class="stat-item">
+                            <div class="stat-value" id="currentUserSwaps">12</div>
+                            <div>Swaps</div>
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="swap-arrow">⇄</div>
+                
+                <div class="user-card">
+                    <div class="user-name" id="targetUserName">Target User</div>
+                    <div class="user-role">Learning</div>
+                    <div class="skills-preview" id="targetUserSkills">
+                        <!-- Skills will be populated here -->
+                    </div>
+                    <div class="user-stats">
+                        <div class="stat-item">
+                            <div class="stat-value" id="targetUserRating">4.9</div>
+                            <div>Rating</div>
+                        </div>
+                        <div class="stat-item">
+                            <div class="stat-value" id="targetUserSwaps">8</div>
+                            <div>Swaps</div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div id="errorMessage" class="error-message" style="display: none;"></div>
+            <div id="successMessage" class="success-message" style="display: none;"></div>
+
+            <form id="swapForm">
+                <div class="form-section">
+                    <label class="form-label" for="offeredSkill">What skill will you offer?</label>
+                    <select class="form-select" id="offeredSkill" required>
+                        <option value="">Select a skill you can teach...</option>
+                        <!-- Options will be populated dynamically -->
+                    </select>
+                </div>
+
+                <div class="form-section">
+                    <label class="form-label" for="wantedSkill">What skill do you want to learn?</label>
+                    <select class="form-select" id="wantedSkill" required>
+                        <option value="">Select a skill you want to learn...</option>
+                        <!-- Options will be populated dynamically -->
+                    </select>
+                </div>
+
+                <div class="form-section">
+                    <label class="form-label" for="message">Optional message</label>
+                    <textarea class="form-textarea" id="message" placeholder="Hi! I'd love to learn [skill] from you. I can teach you [skill] in return. Let me know if you're interested!"></textarea>
+                </div>
+
+                <button type="submit" class="submit-btn" id="submitBtn">
+                    Send Swap Request
+                </button>
+            </form>
+        </div>
+    </div>
+
+    <script>
+        // Enhanced mock user data - much more comprehensive
+        const mockUsers = [
+            {
+                id: 1,
+                name: "Alex Johnson",
+                skills_offered: ["JavaScript", "React", "Node.js", "TypeScript", "MongoDB"],
+                skills_wanted: ["Python", "Data Science", "Machine Learning", "Docker"],
+                rating: 4.8,
+                totalSwaps: 15,
+                location: "San Francisco, CA",
+                bio: "Full-stack developer with 5+ years experience"
+            },
+            {
+                id: 2,
+                name: "Sarah Chen",
+                skills_offered: ["Python", "Data Science", "Machine Learning", "SQL", "Tableau"],
+                skills_wanted: ["JavaScript", "React", "AWS", "DevOps"],
+                rating: 4.9,
+                totalSwaps: 22,
+                location: "New York, NY",
+                bio: "Data scientist passionate about AI and analytics"
+            },
+            {
+                id: 3,
+                name: "Mike Rodriguez",
+                skills_offered: ["Guitar", "Music Production", "Songwriting", "Audio Engineering"],
+                skills_wanted: ["Piano", "Violin", "Music Theory", "Digital Marketing"],
+                rating: 4.6,
+                totalSwaps: 8,
+                location: "Los Angeles, CA",
+                bio: "Professional musician and producer"
+            },
+            {
+                id: 4,
+                name: "Emma Thompson",
+                skills_offered: ["French", "Spanish", "Photography", "Adobe Photoshop", "Travel Writing"],
+                skills_wanted: ["German", "Graphic Design", "Video Editing", "Japanese"],
+                rating: 4.7,
+                totalSwaps: 11,
+                location: "London, UK",
+                bio: "Polyglot and travel photographer"
+            },
+            {
+                id: 5,
+                name: "David Kim",
+                skills_offered: ["Cooking", "Baking", "Nutrition", "Korean Language", "Meal Planning"],
+                skills_wanted: ["Fitness", "Yoga", "Meditation", "Gardening"],
+                rating: 4.5,
+                totalSwaps: 6,
+                location: "Seoul, South Korea",
+                bio: "Chef and nutrition consultant"
+            },
+            {
+                id: 6,
+                name: "Priya Sharma",
+                skills_offered: ["Yoga", "Meditation", "Ayurveda", "Hindi", "Classical Dance"],
+                skills_wanted: ["Pilates", "Nutrition", "Photography", "Web Design"],
+                rating: 4.9,
+                totalSwaps: 18,
+                location: "Mumbai, India",
+                bio: "Certified yoga instructor and wellness coach"
+            },
+            {
+                id: 7,
+                name: "James Wilson",
+                skills_offered: ["Carpentry", "Woodworking", "Home Renovation", "Electrical Work"],
+                skills_wanted: ["Plumbing", "Landscaping", "Automotive Repair", "Welding"],
+                rating: 4.4,
+                totalSwaps: 9,
+                location: "Austin, TX",
+                bio: "Skilled craftsman and DIY enthusiast"
+            },
+            {
+                id: 8,
+                name: "Lisa Anderson",
+                skills_offered: ["Marketing", "Social Media", "Content Writing", "SEO", "Brand Strategy"],
+                skills_wanted: ["Graphic Design", "Video Production", "Data Analytics", "UI/UX Design"],
+                rating: 4.8,
+                totalSwaps: 14,
+                location: "Chicago, IL",
+                bio: "Digital marketing strategist"
+            },
+            {
+                id: 9,
+                name: "Carlos Mendez",
+                skills_offered: ["Spanish", "Salsa Dancing", "Latin Guitar", "Cultural History"],
+                skills_wanted: ["English", "Business Development", "Public Speaking", "Photography"],
+                rating: 4.6,
+                totalSwaps: 7,
+                location: "Mexico City, Mexico",
+                bio: "Cultural educator and dance instructor"
+            },
+            {
+                id: 10,
+                name: "Fatima Al-Rashid",
+                skills_offered: ["Arabic", "Calligraphy", "Middle Eastern Cooking", "Architecture"],
+                skills_wanted: ["Interior Design", "Digital Art", "French", "Business Management"],
+                rating: 4.7,
+                totalSwaps: 10,
+                location: "Dubai, UAE",
+                bio: "Architect and cultural arts teacher"
+            },
+            {
+                id: 11,
+                name: "Erik Larsson",
+                skills_offered: ["Swedish", "Scandinavian Design", "Woodworking", "Furniture Making"],
+                skills_wanted: ["Metal Working", "Electronics", "3D Printing", "Sustainable Living"],
+                rating: 4.5,
+                totalSwaps: 5,
+                location: "Stockholm, Sweden",
+                bio: "Furniture designer and sustainability advocate"
+            },
+            {
+                id: 12,
+                name: "Yuki Tanaka",
+                skills_offered: ["Japanese", "Origami", "Calligraphy", "Tea Ceremony", "Anime Art"],
+                skills_wanted: ["English", "Digital Marketing", "Photography", "Cooking"],
+                rating: 4.8,
+                totalSwaps: 13,
+                location: "Tokyo, Japan",
+                bio: "Traditional arts instructor and cultural ambassador"
+            },
+            {
+                id: 13,
+                name: "Roberto Silva",
+                skills_offered: ["Portuguese", "Capoeira", "Brazilian Jiu-Jitsu", "Samba"],
+                skills_wanted: ["Surfing", "Photography", "English", "Business"],
+                rating: 4.6,
+                totalSwaps: 8,
+                location: "Rio de Janeiro, Brazil",
+                bio: "Martial arts instructor and cultural performer"
+            },
+            {
+                id: 14,
+                name: "Aisha Okafor",
+                skills_offered: ["Hausa", "African Drumming", "Textile Art", "Storytelling"],
+                skills_wanted: ["Fashion Design", "Photography", "Social Media", "English"],
+                rating: 4.7,
+                totalSwaps: 6,
+                location: "Lagos, Nigeria",
+                bio: "Traditional arts teacher and cultural preservationist"
+            },
+            {
+                id: 15,
+                name: "Thomas Mueller",
+                skills_offered: ["German", "Beer Brewing", "Mechanical Engineering", "Classical Music"],
+                skills_wanted: ["Software Development", "Entrepreneurship", "Spanish", "Rock Climbing"],
+                rating: 4.4,
+                totalSwaps: 4,
+                location: "Berlin, Germany",
+                bio: "Engineer and craft beer enthusiast"
+            }
+        ];
+
+        // Enhanced current user profiles to choose from
+        const currentUserProfiles = [
+            {
+                name: "Jordan Smith",
+                skills_offered: ["JavaScript", "React", "Node.js", "Python", "AWS", "Docker"],
+                skills_wanted: ["Machine Learning", "Data Science", "German", "Photography", "Guitar", "Cooking"],
+                rating: 4.8,
+                totalSwaps: 12,
+                location: "Portland, OR"
+            },
+            {
+                name: "Maya Patel",
+                skills_offered: ["Yoga", "Meditation", "Hindi", "Cooking", "Photography", "Digital Marketing"],
+                skills_wanted: ["Piano", "French", "Graphic Design", "Dancing", "Woodworking", "Gardening"],
+                rating: 4.7,
+                totalSwaps: 9,
+                location: "Vancouver, BC"
+            },
+            {
+                name: "Sam Chen",
+                skills_offered: ["Mandarin", "Martial Arts", "Calligraphy", "Traditional Medicine", "Piano"],
+                skills_wanted: ["English", "Programming", "Guitar", "Photography", "Cooking", "Fitness"],
+                rating: 4.6,
+                totalSwaps: 7,
+                location: "Toronto, ON"
+            },
+            {
+                name: "Alex Rivera",
+                skills_offered: ["Spanish", "Salsa Dancing", "Guitar", "Cooking", "Cultural History"],
+                skills_wanted: ["English", "Programming", "Photography", "Fitness", "Business", "Art"],
+                rating: 4.9,
+                totalSwaps: 16,
+                location: "Miami, FL"
+            },
+            {
+                name: "Casey Johnson",
+                skills_offered: ["Graphic Design", "Photography", "Video Editing", "Web Design", "Art"],
+                skills_wanted: ["Programming", "Marketing", "Languages", "Music", "Fitness", "Cooking"],
+                rating: 4.5,
+                totalSwaps: 11,
+                location: "Denver, CO"
+            }
+        ];
+
+        let currentUser = null;
+        let targetUser = null;
+        let currentUserData = null;
+        let targetUserData = null;
+
+        // Initialize the page
+        document.addEventListener('DOMContentLoaded', function() {
+            loadSwapData();
+            setupForm();
+        });
+
+        function loadSwapData() {
+            // Get user data from localStorage or use random data for demo
+            currentUser = localStorage.getItem('currentUser') || 'Demo User';
+            const targetUserId = localStorage.getItem('targetUserId') || Math.floor(Math.random() * mockUsers.length) + 1;
+            
+            // In a real app, you'd load from Firestore here
+            // For now, we'll simulate with enhanced mock data
+            setTimeout(() => {
+                // Find or create target user data
+                targetUserData = mockUsers.find(user => user.id == targetUserId) || mockUsers[0];
+                
+                // Select a random current user profile for demo
+                currentUserData = currentUserProfiles[Math.floor(Math.random() * currentUserProfiles.length)];
+                
+                // Override with stored name if available
+                if (localStorage.getItem('currentUser')) {
+                    currentUserData.name = localStorage.getItem('currentUser');
+                }
+
+                displayUserData();
+                populateSkillDropdowns();
+                
+                document.getElementById('loadingIndicator').style.display = 'none';
+                document.getElementById('swapFormContainer').style.display = 'block';
+            }, 1000);
+        }
+
+        function displayUserData() {
+            // Update current user display
+            document.getElementById('currentUserName').textContent = currentUserData.name;
+            document.getElementById('currentUserRating').textContent = currentUserData.rating;
+            document.getElementById('currentUserSwaps').textContent = currentUserData.totalSwaps;
+            
+            const currentUserSkills = document.getElementById('currentUserSkills');
+            currentUserSkills.innerHTML = currentUserData.skills_offered.slice(0, 4).map(skill => 
+                `<span class="skill-tag">${skill}</span>`
+            ).join('');
+
+            // Update target user display
+            document.getElementById('targetUserName').textContent = targetUserData.name;
+            document.getElementById('targetUserRating').textContent = targetUserData.rating;
+            document.getElementById('targetUserSwaps').textContent = targetUserData.totalSwaps;
+            
+            const targetUserSkills = document.getElementById('targetUserSkills');
+            targetUserSkills.innerHTML = targetUserData.skills_offered.slice(0, 4).map(skill => 
+                `<span class="skill-tag">${skill}</span>`
+            ).join('');
+        }
+
+        function populateSkillDropdowns() {
+            // Populate offered skills dropdown
+            const offeredSkillSelect = document.getElementById('offeredSkill');
+            currentUserData.skills_offered.forEach(skill => {
+                const option = document.createElement('option');
+                option.value = skill;
+                option.textContent = skill;
+                offeredSkillSelect.appendChild(option);
+            });
+
+            // Populate wanted skills dropdown
+            const wantedSkillSelect = document.getElementById('wantedSkill');
+            targetUserData.skills_offered.forEach(skill => {
+                const option = document.createElement('option');
+                option.value = skill;
+                option.textContent = skill;
+                wantedSkillSelect.appendChild(option);
+            });
+        }
+
+        function setupForm() {
+            document.getElementById('swapForm').addEventListener('submit', handleFormSubmit);
+        }
+
+        function handleFormSubmit(e) {
+            e.preventDefault();
+            
+            const formData = {
+                id: Date.now(), // Simple ID for demo
+                currentUser: currentUserData.name,
+                targetUser: targetUserData.name,
+                targetUserId: targetUserData.id,
+                currentUserLocation: currentUserData.location,
+                targetUserLocation: targetUserData.location,
+                offeredSkill: document.getElementById('offeredSkill').value,
+                wantedSkill: document.getElementById('wantedSkill').value,
+                message: document.getElementById('message').value,
+                timestamp: new Date().toISOString(),
+                status: 'pending',
+                currentUserRating: currentUserData.rating,
+                targetUserRating: targetUserData.rating
+            };
+
+            // Validate form
+            if (!formData.offeredSkill || !formData.wantedSkill) {
+                showError('Please select both skills for the swap.');
+                return;
+            }
+
+            // Show loading state
+            const submitBtn = document.getElementById('submitBtn');
+            submitBtn.disabled = true;
+            submitBtn.textContent = 'Sending Request...';
+
+            // Simulate API call
+            setTimeout(() => {
+                // Save to localStorage as simulation
+                const swapRequests = JSON.parse(localStorage.getItem('swapRequests') || '[]');
+                swapRequests.push(formData);
+                localStorage.setItem('swapRequests', JSON.stringify(swapRequests));
+
+                // Also save to sent requests
+                const sentRequests = JSON.parse(localStorage.getItem('sentRequests') || '[]');
+                sentRequests.push(formData);
+                localStorage.setItem('sentRequests', JSON.stringify(sentRequests));
+
+                showSuccess(`Swap request sent to ${targetUserData.name}! They'll be notified about your request.`);
+                
+                // Reset form
+                document.getElementById('swapForm').reset();
+                submitBtn.disabled = false;
+                submitBtn.textContent = 'Send Swap Request';
+
+                // Redirect after 3 seconds
+                setTimeout(() => {
+                    window.location.href = 'index.html';
+                }, 3000);
+            }, 1500);
+        }
+
+        function showError(message) {
+            const errorDiv = document.getElementById('errorMessage');
+            errorDiv.textContent = message;
+            errorDiv.style.display = 'block';
+            
+            // Hide success message if visible
+            document.getElementById('successMessage').style.display = 'none';
+        }
+
+        function showSuccess(message) {
+            const successDiv = document.getElementById('successMessage');
+            successDiv.textContent = message;
+            successDiv.style.display = 'block';
+            
+            // Hide error message if visible
+            document.getElementById('errorMessage').style.display = 'none';
+        }
+
+        function goBack() {
+            window.history.back();
+        }
+    </script>
+</body>
+</html>

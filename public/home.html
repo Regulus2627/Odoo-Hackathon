@@ -1,0 +1,607 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Skill Swap - Find Your Learning Partner</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            min-height: 100vh;
+            padding: 20px;
+        }
+
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+        }
+
+        header {
+            background: rgba(255, 255, 255, 0.1);
+            backdrop-filter: blur(10px);
+            border-radius: 20px;
+            padding: 30px;
+            margin-bottom: 30px;
+            text-align: center;
+            border: 1px solid rgba(255, 255, 255, 0.2);
+        }
+
+        h1 {
+            color: white;
+            font-size: 2.5em;
+            margin-bottom: 10px;
+            text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.3);
+        }
+
+        .subtitle {
+            color: rgba(255, 255, 255, 0.9);
+            font-size: 1.2em;
+            margin-bottom: 20px;
+        }
+
+        .user-status {
+            display: inline-block;
+            padding: 10px 20px;
+            background: rgba(255, 255, 255, 0.2);
+            border-radius: 25px;
+            color: white;
+            font-weight: 500;
+            margin-bottom: 20px;
+            border: 1px solid rgba(255, 255, 255, 0.3);
+        }
+
+        .login-section {
+            margin-bottom: 20px;
+        }
+
+        .login-input {
+            padding: 12px 20px;
+            border: none;
+            border-radius: 25px;
+            margin-right: 10px;
+            font-size: 16px;
+            background: rgba(255, 255, 255, 0.9);
+            backdrop-filter: blur(5px);
+            min-width: 200px;
+        }
+
+        .login-input:focus {
+            outline: none;
+            box-shadow: 0 0 20px rgba(255, 255, 255, 0.3);
+        }
+
+        .search-container {
+            background: rgba(255, 255, 255, 0.1);
+            backdrop-filter: blur(10px);
+            border-radius: 20px;
+            padding: 30px;
+            margin-bottom: 30px;
+            border: 1px solid rgba(255, 255, 255, 0.2);
+        }
+
+        .search-box {
+            width: 100%;
+            padding: 15px 25px;
+            border: none;
+            border-radius: 25px;
+            font-size: 18px;
+            background: rgba(255, 255, 255, 0.9);
+            backdrop-filter: blur(5px);
+            transition: all 0.3s ease;
+        }
+
+        .search-box:focus {
+            outline: none;
+            box-shadow: 0 0 30px rgba(255, 255, 255, 0.4);
+            transform: translateY(-2px);
+        }
+
+        .search-box::placeholder {
+            color: #666;
+        }
+
+        .profiles-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(350px, 1fr));
+            gap: 25px;
+            margin-top: 30px;
+        }
+
+        .profile-card {
+            background: rgba(255, 255, 255, 0.1);
+            backdrop-filter: blur(15px);
+            border-radius: 20px;
+            padding: 25px;
+            border: 1px solid rgba(255, 255, 255, 0.2);
+            transition: all 0.3s ease;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .profile-card:hover {
+            transform: translateY(-10px);
+            box-shadow: 0 20px 40px rgba(0, 0, 0, 0.2);
+            border-color: rgba(255, 255, 255, 0.4);
+        }
+
+        .profile-card::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            height: 4px;
+            background: linear-gradient(90deg, #ff6b6b, #4ecdc4, #45b7d1, #96ceb4);
+            animation: shimmer 2s infinite;
+        }
+
+        @keyframes shimmer {
+            0% { transform: translateX(-100%); }
+            100% { transform: translateX(100%); }
+        }
+
+        .profile-name {
+            color: white;
+            font-size: 1.4em;
+            font-weight: 600;
+            margin-bottom: 15px;
+            text-shadow: 1px 1px 2px rgba(0, 0, 0, 0.3);
+        }
+
+        .skills-section {
+            margin-bottom: 20px;
+        }
+
+        .skills-label {
+            color: rgba(255, 255, 255, 0.8);
+            font-size: 0.9em;
+            margin-bottom: 8px;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+        }
+
+        .skills-list {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 8px;
+        }
+
+        .skill-tag {
+            background: rgba(255, 255, 255, 0.2);
+            color: white;
+            padding: 6px 12px;
+            border-radius: 15px;
+            font-size: 0.85em;
+            font-weight: 500;
+            border: 1px solid rgba(255, 255, 255, 0.3);
+            transition: all 0.3s ease;
+        }
+
+        .skill-tag:hover {
+            background: rgba(255, 255, 255, 0.3);
+            transform: scale(1.05);
+        }
+
+        .rating-section {
+            display: flex;
+            align-items: center;
+            margin-bottom: 20px;
+        }
+
+        .rating-label {
+            color: rgba(255, 255, 255, 0.8);
+            font-size: 0.9em;
+            margin-right: 10px;
+        }
+
+        .stars {
+            color: #ffd700;
+            font-size: 1.2em;
+            margin-right: 10px;
+        }
+
+        .rating-value {
+            color: white;
+            font-weight: 600;
+            font-size: 1.1em;
+        }
+
+        .request-btn {
+            width: 100%;
+            padding: 12px;
+            border: none;
+            border-radius: 25px;
+            font-size: 16px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+        }
+
+        .request-btn.enabled {
+            background: linear-gradient(45deg, #ff6b6b, #ff8e8e);
+            color: white;
+            box-shadow: 0 4px 15px rgba(255, 107, 107, 0.3);
+        }
+
+        .request-btn.enabled:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 8px 25px rgba(255, 107, 107, 0.4);
+        }
+
+        .request-btn.disabled {
+            background: rgba(255, 255, 255, 0.1);
+            color: rgba(255, 255, 255, 0.5);
+            cursor: not-allowed;
+            border: 1px solid rgba(255, 255, 255, 0.2);
+        }
+
+        .btn {
+            padding: 12px 25px;
+            border: none;
+            border-radius: 25px;
+            font-size: 16px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+        }
+
+        .btn-primary {
+            background: linear-gradient(45deg, #4ecdc4, #44a08d);
+            color: white;
+            box-shadow: 0 4px 15px rgba(78, 205, 196, 0.3);
+        }
+
+        .btn-primary:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 8px 25px rgba(78, 205, 196, 0.4);
+        }
+
+        .btn-secondary {
+            background: rgba(255, 255, 255, 0.2);
+            color: white;
+            border: 1px solid rgba(255, 255, 255, 0.3);
+        }
+
+        .btn-secondary:hover {
+            background: rgba(255, 255, 255, 0.3);
+            transform: translateY(-2px);
+        }
+
+        .no-profiles {
+            text-align: center;
+            color: rgba(255, 255, 255, 0.8);
+            font-size: 1.2em;
+            margin-top: 50px;
+            padding: 40px;
+            background: rgba(255, 255, 255, 0.1);
+            border-radius: 20px;
+            backdrop-filter: blur(10px);
+        }
+
+        .loading {
+            text-align: center;
+            color: white;
+            font-size: 1.2em;
+            margin-top: 50px;
+        }
+
+        .spinner {
+            border: 4px solid rgba(255, 255, 255, 0.3);
+            border-top: 4px solid white;
+            border-radius: 50%;
+            width: 40px;
+            height: 40px;
+            animation: spin 1s linear infinite;
+            margin: 20px auto;
+        }
+
+        @keyframes spin {
+            0% { transform: rotate(0deg); }
+            100% { transform: rotate(360deg); }
+        }
+
+        @media (max-width: 768px) {
+            .profiles-grid {
+                grid-template-columns: 1fr;
+            }
+            
+            h1 {
+                font-size: 2em;
+            }
+            
+            .login-input {
+                margin-bottom: 10px;
+                margin-right: 0;
+                width: 100%;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <header>
+            <h1>🔄 Skill Swap</h1>
+            <p class="subtitle">Connect • Learn • Grow Together</p>
+            
+            <div class="user-status" id="userStatus">
+                Not logged in
+            </div>
+
+            <div class="login-section" id="loginSection">
+                <input type="text" class="login-input" id="usernameInput" placeholder="Enter your username">
+                <button class="btn btn-primary" onclick="login()">Login</button>
+            </div>
+        </header>
+
+        <div class="search-container">
+            <input type="text" class="search-box" id="searchBox" placeholder="🔍 Search skills (e.g., JavaScript, Guitar, French...)">
+        </div>
+
+        <div class="loading" id="loadingIndicator">
+            <div class="spinner"></div>
+            Loading profiles...
+        </div>
+
+        <div class="profiles-grid" id="profilesGrid" style="display: none;">
+            <!-- Profiles will be populated here -->
+        </div>
+
+        <div class="no-profiles" id="noProfiles" style="display: none;">
+            <h3>No profiles found</h3>
+            <p>Try searching for different skills or check back later!</p>
+        </div>
+    </div>
+
+    <script>
+        // Mock user data - in real app, this would come from a database
+        const mockUsers = [
+            {
+                id: 1,
+                name: "Alex Johnson",
+                skills_offered: ["JavaScript", "React", "Node.js"],
+                rating: 4.8
+            },
+            {
+                id: 2,
+                name: "Sarah Chen",
+                skills_offered: ["Python", "Data Science", "Machine Learning"],
+                rating: 4.9
+            },
+            {
+                id: 3,
+                name: "Mike Rodriguez",
+                skills_offered: ["Guitar", "Music Production", "Songwriting"],
+                rating: 4.6
+            },
+            {
+                id: 4,
+                name: "Emma Thompson",
+                skills_offered: ["French", "Spanish", "Photography"],
+                rating: 4.7
+            },
+            {
+                id: 5,
+                name: "David Kim",
+                skills_offered: ["Cooking", "Baking", "Nutrition"],
+                rating: 4.5
+            },
+            {
+                id: 6,
+                name: "Lisa Parker",
+                skills_offered: ["Yoga", "Meditation", "Wellness"],
+                rating: 4.8
+            },
+            {
+                id: 7,
+                name: "Tom Wilson",
+                skills_offered: ["Carpentry", "Woodworking", "DIY"],
+                rating: 4.6
+            },
+            {
+                id: 8,
+                name: "Rachel Green",
+                skills_offered: ["Graphic Design", "Illustrator", "Photoshop"],
+                rating: 4.9
+            }
+        ];
+
+        let currentUser = null;
+        let allProfiles = [];
+        let filteredProfiles = [];
+
+        // Initialize the page
+        document.addEventListener('DOMContentLoaded', function() {
+            // Check if user is already logged in
+            const savedUser = localStorage.getItem('currentUser');
+            if (savedUser) {
+                currentUser = savedUser;
+                updateUserStatus();
+            }
+
+            // Load profiles
+            loadProfiles();
+
+            // Set up search functionality
+            document.getElementById('searchBox').addEventListener('input', handleSearch);
+        });
+
+        function login() {
+            const username = document.getElementById('usernameInput').value.trim();
+            if (username) {
+                currentUser = username;
+                localStorage.setItem('currentUser', username);
+                updateUserStatus();
+                document.getElementById('usernameInput').value = '';
+            }
+        }
+
+        function logout() {
+            currentUser = null;
+            localStorage.removeItem('currentUser');
+            updateUserStatus();
+        }
+
+        function updateUserStatus() {
+            const userStatus = document.getElementById('userStatus');
+            const loginSection = document.getElementById('loginSection');
+            
+            if (currentUser) {
+                userStatus.innerHTML = `Welcome, ${currentUser}! <button class="btn btn-secondary" onclick="logout()" style="margin-left: 10px; padding: 8px 16px; font-size: 14px;">Logout</button>`;
+                loginSection.style.display = 'none';
+            } else {
+                userStatus.textContent = 'Not logged in';
+                loginSection.style.display = 'block';
+            }
+            
+            // Update all request buttons
+            updateRequestButtons();
+        }
+
+        function loadProfiles() {
+            // Simulate API call delay
+            setTimeout(() => {
+                allProfiles = mockUsers;
+                filteredProfiles = [...allProfiles];
+                displayProfiles();
+                document.getElementById('loadingIndicator').style.display = 'none';
+                document.getElementById('profilesGrid').style.display = 'grid';
+            }, 1000);
+        }
+
+        function displayProfiles() {
+            const profilesGrid = document.getElementById('profilesGrid');
+            const noProfiles = document.getElementById('noProfiles');
+            
+            if (filteredProfiles.length === 0) {
+                profilesGrid.style.display = 'none';
+                noProfiles.style.display = 'block';
+                return;
+            }
+            
+            profilesGrid.style.display = 'grid';
+            noProfiles.style.display = 'none';
+            
+            profilesGrid.innerHTML = filteredProfiles.map(user => `
+                <div class="profile-card">
+                    <h3 class="profile-name">${user.name}</h3>
+                    
+                    <div class="skills-section">
+                        <div class="skills-label">Skills Offered</div>
+                        <div class="skills-list">
+                            ${user.skills_offered.map(skill => `
+                                <span class="skill-tag">${skill}</span>
+                            `).join('')}
+                        </div>
+                    </div>
+                    
+                    <div class="rating-section">
+                        <span class="rating-label">Rating:</span>
+                        <span class="stars">${generateStars(user.rating)}</span>
+                        <span class="rating-value">${user.rating}</span>
+                    </div>
+                    
+                    <button class="request-btn ${currentUser ? 'enabled' : 'disabled'}" 
+                            onclick="requestSwap(${user.id})"
+                            ${!currentUser ? 'disabled' : ''}>
+                        ${currentUser ? 'Request Swap' : 'Login to Request'}
+                    </button>
+                </div>
+            `).join('');
+        }
+
+        function generateStars(rating) {
+            const fullStars = Math.floor(rating);
+            const hasHalfStar = rating % 1 !== 0;
+            let stars = '';
+            
+            for (let i = 0; i < fullStars; i++) {
+                stars += '★';
+            }
+            
+            if (hasHalfStar) {
+                stars += '☆';
+            }
+            
+            return stars;
+        }
+
+        function updateRequestButtons() {
+            const buttons = document.querySelectorAll('.request-btn');
+            buttons.forEach(btn => {
+                if (currentUser) {
+                    btn.classList.remove('disabled');
+                    btn.classList.add('enabled');
+                    btn.disabled = false;
+                    btn.textContent = 'Request Swap';
+                } else {
+                    btn.classList.remove('enabled');
+                    btn.classList.add('disabled');
+                    btn.disabled = true;
+                    btn.textContent = 'Login to Request';
+                }
+            });
+        }
+
+        function handleSearch() {
+            const searchTerm = document.getElementById('searchBox').value.toLowerCase().trim();
+            
+            if (searchTerm === '') {
+                filteredProfiles = [...allProfiles];
+            } else {
+                filteredProfiles = allProfiles.filter(user => 
+                    user.skills_offered.some(skill => 
+                        skill.toLowerCase().includes(searchTerm)
+                    )
+                );
+            }
+            
+            displayProfiles();
+        }
+
+        function requestSwap(userId) {
+            if (!currentUser) {
+                alert('Please login first to request a swap!');
+                return;
+            }
+            
+            const targetUser = allProfiles.find(user => user.id === userId);
+            if (targetUser) {
+                // Store target user ID in localStorage
+                localStorage.setItem('targetUserId', userId);
+                localStorage.setItem('targetUserName', targetUser.name);
+                
+                // Show confirmation
+                if (confirm(`Send swap request to ${targetUser.name}?`)) {
+                    // Redirect to swap.html
+                    window.location.href = 'swap.html';
+                }
+            }
+        }
+
+        // Handle Enter key in search box
+        document.getElementById('searchBox').addEventListener('keypress', function(e) {
+            if (e.key === 'Enter') {
+                handleSearch();
+            }
+        });
+
+        // Handle Enter key in login input
+        document.getElementById('usernameInput').addEventListener('keypress', function(e) {
+            if (e.key === 'Enter') {
+                login();
+            }
+        });
+    </script>
+</body>
+</html>
